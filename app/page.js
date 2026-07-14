@@ -82,57 +82,57 @@ export default function Home() {
     <main className="relative pb-24 md:pb-0">
       <Navbar transparent />
 
-      <section className="relative overflow-hidden px-6 py-20 md:py-28 min-h-[480px] md:min-h-[640px] lg:min-h-[720px] flex items-center">
+      <section className="relative overflow-hidden px-5 py-16 sm:px-6 sm:py-20 md:py-28 min-h-[560px] sm:min-h-[480px] md:min-h-[640px] lg:min-h-[720px] flex items-center">
         <Image
           src="/img/67436467.png"
           alt="Buddhist stupa and lotus flower by a calm lake at sunrise"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[center_70%]"
+          className="object-cover object-[center_88%] sm:object-[center_70%]"
         />
-        <div className="absolute inset-x-0 top-0 h-32 md:h-40 bg-gradient-to-b from-background/70 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-24 sm:h-32 md:h-40 bg-gradient-to-b from-background/70 to-transparent" />
 
         <div className="relative max-w-3xl w-full mx-auto">
-          <h1 className="animate-fade-in-up text-5xl sm:text-6xl md:text-7xl font-bold text-primary mb-4 tracking-wide">
+          <h1 className="animate-fade-in-up text-3xl sm:text-6xl md:text-7xl font-bold text-primary mb-3 sm:mb-4 tracking-wide">
             සත්කාර
           </h1>
           <p
-            className="animate-fade-in-up text-lg sm:text-xl md:text-2xl font-medium text-accent mb-4 leading-snug"
+            className="animate-fade-in-up text-sm sm:text-xl md:text-2xl font-medium text-accent mb-3 sm:mb-4 leading-snug"
             style={{ animationDelay: "0.12s" }}
           >
             {t("home.tagline")}
           </p>
 
           <div
-            className="animate-fade-in-up flex items-center gap-3 my-5"
+            className="animate-fade-in-up flex items-center gap-3 my-4 sm:my-5"
             style={{ animationDelay: "0.18s" }}
           >
-            <span className="h-px w-10 bg-accent/50" />
+            <span className="h-px w-8 sm:w-10 bg-accent/50" />
             <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-            <span className="h-px w-10 bg-accent/50" />
+            <span className="h-px w-8 sm:w-10 bg-accent/50" />
           </div>
 
           <p
-            className="animate-fade-in-up text-charcoal/80 text-base md:text-lg mb-8"
+            className="animate-fade-in-up text-charcoal/80 text-xs sm:text-base md:text-lg mb-6 sm:mb-8"
             style={{ animationDelay: "0.24s" }}
           >
             {t("home.subtitle")}
           </p>
 
           <div
-            className="animate-fade-in-up flex flex-col sm:flex-row items-start sm:items-center gap-3"
+            className="animate-fade-in-up flex flex-col sm:flex-row items-stretch sm:items-center gap-3"
             style={{ animationDelay: "0.36s" }}
           >
             <a
               href={user ? "/add" : "/login"}
-              className="min-h-[48px] px-7 flex items-center justify-center rounded-full bg-primary text-background font-medium text-sm md:text-base shadow-lg hover:bg-primary/90 transition"
+              className="min-h-[40px] sm:min-h-[48px] px-5 sm:px-7 flex items-center justify-center rounded-full bg-primary text-background font-medium text-xs sm:text-sm md:text-base shadow-lg hover:bg-primary/90 transition"
             >
               {t("home.cta")}
             </a>
             <a
               href="#donations"
-              className="min-h-[48px] px-7 flex items-center justify-center gap-2 rounded-full border border-primary text-primary font-medium text-sm md:text-base hover:bg-primary/5 transition"
+              className="min-h-[40px] sm:min-h-[48px] px-5 sm:px-7 flex items-center justify-center gap-2 rounded-full border border-primary text-primary font-medium text-xs sm:text-sm md:text-base hover:bg-primary/5 transition"
             >
               <PlayIcon />
               {t("home.viewDonationsCta")}
@@ -142,7 +142,7 @@ export default function Home() {
       </section>
 
       <div className="max-w-4xl mx-auto px-4 md:px-6 -mt-8 md:-mt-10 relative z-10">
-        <div className="animate-fade-in-up bg-surface rounded-card border border-border shadow-md grid grid-cols-2 md:grid-cols-4 divide-y divide-border md:divide-y-0 md:divide-x">
+        <div className="animate-fade-in-up bg-surface/20 backdrop-blur-md rounded-card border border-border/20 shadow-md grid grid-cols-2 md:grid-cols-4 divide-y divide-border/20 md:divide-y-0 md:divide-x">
           {features.map(({ Icon, title, desc }) => (
             <div key={title} className="flex items-center gap-3 px-5 py-5">
               <span className="shrink-0 w-10 h-10 rounded-full bg-accent/10 text-accent flex items-center justify-center">

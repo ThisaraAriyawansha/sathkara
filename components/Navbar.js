@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useLanguage } from "@/context/LanguageContext";
 import { useAuth } from "@/context/AuthContext";
 
@@ -14,6 +15,12 @@ const UserIcon = () => (
 export default function Navbar({ transparent = false }) {
   const { lang, changeLang, t } = useLanguage();
   const { user, profile, logout } = useAuth();
+  const pathname = usePathname();
+
+  const linkClass = (href) =>
+    `relative py-1 transition hover:text-primary after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-primary after:transition-transform after:content-[''] ${
+      pathname === href ? "text-primary after:scale-x-100" : ""
+    }`;
 
   return (
     <nav
@@ -38,14 +45,14 @@ export default function Navbar({ transparent = false }) {
 
         {/* Desktop-only text nav, centered — mobile users get the bottom tab bar instead */}
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-charcoal absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-          <a href="/" className="hover:text-primary transition">{t("nav.home")}</a>
-          <a href={user ? "/add" : "/login"} className="hover:text-primary transition">{t("nav.addDonation")}</a>
-          <a href={user ? "/profile" : "/login"} className="hover:text-primary transition">{t("nav.profile")}</a>
+          <a href="/" className={linkClass("/")}>{t("nav.home")}</a>
+          <a href={user ? "/add" : "/login"} className={linkClass("/add")}>{t("nav.addDonation")}</a>
+          <a href={user ? "/profile" : "/login"} className={linkClass("/profile")}>{t("nav.profile")}</a>
           {user && profile?.role === "admin" && (
-            <a href="/admin" className="hover:text-primary transition">{t("nav.admin")}</a>
+            <a href="/admin" className={linkClass("/admin")}>{t("nav.admin")}</a>
           )}
           {user && (
-            <button onClick={logout} className="hover:text-primary transition">{t("nav.logout")}</button>
+            <button onClick={logout} className="relative py-1 hover:text-primary transition">{t("nav.logout")}</button>
           )}
         </div>
 
