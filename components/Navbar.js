@@ -26,16 +26,14 @@ export default function Navbar({ transparent = false }) {
       <div className="relative max-w-6xl mx-auto flex items-center justify-between px-4 md:px-8 py-3 md:py-4">
         <a href="/" className="flex items-center gap-2 shrink-0">
           <Image
-            src="/img/logo.png"
+            src="/img/5645675736776.png"
             alt="Sathkara"
-            width={468}
-            height={533}
+            width={374}
+            height={356}
             className="h-9 md:h-11 w-auto"
             priority
           />
-          <span className="text-lg md:text-xl font-semibold text-primary tracking-wide">
-            සත්කාර
-          </span>
+
         </a>
 
         {/* Desktop-only text nav, centered — mobile users get the bottom tab bar instead */}
