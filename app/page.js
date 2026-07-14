@@ -84,12 +84,20 @@ export default function Home() {
 
       <section className="relative overflow-hidden px-5 py-16 sm:px-6 sm:py-20 md:py-28 min-h-[560px] sm:min-h-[480px] md:min-h-[640px] lg:min-h-[720px] flex items-center">
         <Image
+          src="/img/674564376.png"
+          alt="Buddhist stupa and lotus flower by a calm lake at sunrise"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center sm:hidden"
+        />
+        <Image
           src="/img/67436467.png"
           alt="Buddhist stupa and lotus flower by a calm lake at sunrise"
           fill
           priority
           sizes="100vw"
-          className="object-cover scale-150 object-[center_82%] sm:scale-100 sm:object-[center_70%]"
+          className="hidden sm:block object-cover object-[center_70%]"
         />
         <div className="absolute inset-x-0 top-0 h-24 sm:h-32 md:h-40 bg-gradient-to-b from-background/70 to-transparent" />
 
