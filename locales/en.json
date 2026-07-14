@@ -11,7 +11,18 @@
     "tagline": "Keep your good deeds in memory forever",
     "subtitle": "Record and share your acts of merit",
     "cta": "Add a Donation",
-    "noDonations": "No donations yet. Be the first to share one."
+    "viewDonationsCta": "View Donations",
+    "noDonations": "No donations yet. Be the first to share one.",
+    "features": {
+      "secureTitle": "Secure",
+      "secureDesc": "Your data is safely protected",
+      "syncTitle": "Synced",
+      "syncDesc": "Across all your devices",
+      "simpleTitle": "Simple & Easy",
+      "simpleDesc": "Anyone can use it with ease",
+      "heartfeltTitle": "Heartfelt",
+      "heartfeltDesc": "Inspiring acts of merit"
+    }
   },
   "donation": {
     "title": "Title",
