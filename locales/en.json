@@ -4,11 +4,14 @@
     "addDonation": "Add Donation",
     "profile": "Profile",
     "login": "Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "admin": "Admin"
   },
   "home": {
     "tagline": "Keep your good deeds in memory forever",
-    "subtitle": "Record and share your acts of merit"
+    "subtitle": "Record and share your acts of merit",
+    "cta": "Add a Donation",
+    "noDonations": "No donations yet. Be the first to share one."
   },
   "donation": {
     "title": "Title",
@@ -19,7 +22,28 @@
     "image": "Image",
     "public": "Visible to everyone",
     "private": "Private",
-    "wellWish": "Sadhu! Sadhu!! Sadhu!!!"
+    "wellWish": "Sadhu! Sadhu!! Sadhu!!!",
+    "wellWishShort": "well-wishes",
+    "notFound": "This donation could not be found.",
+    "wellWishesTitle": "Well-wishes",
+    "wellWishPlaceholder": "Write a short well-wish...",
+    "postWellWish": "Post",
+    "toWellWish": "to send a well-wish.",
+    "noWellWishes": "No well-wishes yet. Be the first."
+  },
+  "addDonation": {
+    "title": "Add a Donation",
+    "save": "Save",
+    "saving": "Saving..."
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "adminBadge": "Admin",
+    "disabledBadge": "Disabled",
+    "promote": "Make Admin",
+    "demote": "Remove Admin",
+    "enable": "Enable",
+    "disable": "Disable"
   },
   "categories": {
     "dana": "Dana (Alms giving)",
@@ -28,5 +52,34 @@
     "temple": "Temple Donation",
     "alms": "Religious Merit Act",
     "other": "Other"
+  },
+  "auth": {
+    "loginTitle": "Login",
+    "signupTitle": "Create Account",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "loginButton": "Login",
+    "signupButton": "Create Account",
+    "googleButton": "Continue with Google",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "signupLink": "Sign up",
+    "loginLink": "Login",
+    "error": "Something went wrong. Please try again.",
+    "blocked": "This account has been disabled. Please contact an admin."
+  },
+  "profile": {
+    "editProfile": "Edit Profile",
+    "bio": "About",
+    "bioPlaceholder": "A short description about you...",
+    "profilePic": "Profile Picture",
+    "save": "Save",
+    "saving": "Saving...",
+    "myDonations": "My Donations",
+    "noDonations": "No donations yet",
+    "notFound": "This profile could not be found.",
+    "thisIsYou": "This is you — edit your profile",
+    "donationsBy": "Donations"
   }
 }

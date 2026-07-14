@@ -1,9 +1,11 @@
 "use client";
 
 import { useLanguage } from "@/context/LanguageContext";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Navbar() {
   const { lang, changeLang, t } = useLanguage();
+  const { user, profile, logout } = useAuth();
 
   return (
     <nav className="w-full border-b border-border bg-surface sticky top-0 z-40">
@@ -16,8 +18,18 @@ export default function Navbar() {
           {/* Desktop-only text nav — mobile users get the bottom tab bar instead */}
           <div className="hidden md:flex items-center gap-6 text-sm text-charcoal">
             <a href="/" className="hover:text-primary transition">{t("nav.home")}</a>
-            <a href="/add" className="hover:text-primary transition">{t("nav.addDonation")}</a>
-            <a href="/profile" className="hover:text-primary transition">{t("nav.profile")}</a>
+            {user ? (
+              <>
+                <a href="/add" className="hover:text-primary transition">{t("nav.addDonation")}</a>
+                <a href="/profile" className="hover:text-primary transition">{t("nav.profile")}</a>
+                {profile?.role === "admin" && (
+                  <a href="/admin" className="hover:text-primary transition">{t("nav.admin")}</a>
+                )}
+                <button onClick={logout} className="hover:text-primary transition">{t("nav.logout")}</button>
+              </>
+            ) : (
+              <a href="/login" className="hover:text-primary transition">{t("nav.login")}</a>
+            )}
           </div>
 
           <button

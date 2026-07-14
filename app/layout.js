@@ -1,6 +1,7 @@
 import { Poppins, Noto_Sans_Sinhala } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { AuthProvider } from "@/context/AuthContext";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -23,7 +24,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="si">
       <body className={`${poppins.variable} ${notoSinhala.variable} font-sans bg-background text-charcoal`}>
-        <LanguageProvider>{children}</LanguageProvider>
+        <AuthProvider>
+          <LanguageProvider>{children}</LanguageProvider>
+        </AuthProvider>
       </body>
     </html>
   );

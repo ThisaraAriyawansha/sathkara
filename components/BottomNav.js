@@ -1,6 +1,7 @@
 "use client";
 
 import { useLanguage } from "@/context/LanguageContext";
+import { useAuth } from "@/context/AuthContext";
 
 const HomeIcon = ({ active }) => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#556B2F" : "#6B7280"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -25,8 +26,11 @@ const ProfileIcon = ({ active }) => (
 
 export default function BottomNav({ activePath = "/" }) {
   const { t } = useLanguage();
+  const { user } = useAuth();
 
   const isActive = (path) => activePath === path;
+  const profileHref = user ? "/profile" : "/login";
+  const addHref = user ? "/add" : "/login";
 
   return (
     <nav
@@ -46,7 +50,7 @@ export default function BottomNav({ activePath = "/" }) {
 
         {/* Center raised Add button — primary action, largest tap target */}
         <a
-          href="/add"
+          href={addHref}
           className="flex flex-col items-center justify-center -mt-6"
         >
           <span className="w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-lg">
@@ -55,7 +59,7 @@ export default function BottomNav({ activePath = "/" }) {
         </a>
 
         <a
-          href="/profile"
+          href={profileHref}
           className="flex flex-col items-center justify-center min-w-[64px] min-h-[52px] gap-1"
         >
           <ProfileIcon active={isActive("/profile")} />

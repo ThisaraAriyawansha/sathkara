@@ -1,0 +1,51 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function isAdmin() {
+      return isSignedIn() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    match /users/{uid} {
+      allow read: if isSignedIn();
+      allow create: if isOwner(uid);
+      allow update: if isAdmin() || (
+        isOwner(uid) &&
+        request.resource.data.role == resource.data.role &&
+        request.resource.data.disabled == resource.data.disabled
+      );
+      allow delete: if false;
+    }
+
+    match /donations/{donationId} {
+      allow read: if resource.data.visibility == 'public' ||
+        (isSignedIn() && request.auth.uid == resource.data.authorId) ||
+        isAdmin();
+      allow create: if isSignedIn() && request.resource.data.authorId == request.auth.uid;
+      allow update, delete: if isSignedIn() &&
+        (request.auth.uid == resource.data.authorId || isAdmin());
+
+      match /wellWishes/{wishId} {
+        allow read: if get(/databases/$(database)/documents/donations/$(donationId)).data.visibility == 'public' ||
+          (isSignedIn() && get(/databases/$(database)/documents/donations/$(donationId)).data.authorId == request.auth.uid) ||
+          isAdmin();
+        allow create: if isSignedIn() && request.resource.data.authorId == request.auth.uid;
+        allow update: if false;
+        allow delete: if isSignedIn() &&
+          (request.auth.uid == resource.data.authorId ||
+           request.auth.uid == get(/databases/$(database)/documents/donations/$(donationId)).data.authorId ||
+           isAdmin());
+      }
+    }
+  }
+}
