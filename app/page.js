@@ -82,16 +82,16 @@ export default function Home() {
     <main className="relative pb-24 md:pb-0">
       <Navbar transparent />
 
-      <section className="relative overflow-hidden px-6 py-20 md:py-28 min-h-[480px] md:min-h-[600px] flex items-center">
+      <section className="relative overflow-hidden px-6 py-20 md:py-28 min-h-[480px] md:min-h-[640px] lg:min-h-[720px] flex items-center">
         <Image
           src="/img/67436467.png"
           alt="Buddhist stupa and lotus flower by a calm lake at sunrise"
           fill
           priority
           sizes="100vw"
-          className="object-cover"
+          className="object-cover object-[center_70%]"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-background/35 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-32 md:h-40 bg-gradient-to-b from-background/70 to-transparent" />
 
         <div className="relative max-w-3xl w-full mx-auto">
           <h1 className="animate-fade-in-up text-5xl sm:text-6xl md:text-7xl font-bold text-primary mb-4 tracking-wide">
