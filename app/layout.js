@@ -1,0 +1,30 @@
+import { Poppins, Noto_Sans_Sinhala } from "next/font/google";
+import "./globals.css";
+import { LanguageProvider } from "@/context/LanguageContext";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-poppins",
+});
+
+const notoSinhala = Noto_Sans_Sinhala({
+  subsets: ["sinhala"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-noto-sinhala",
+});
+
+export const metadata = {
+  title: "සත්කාර | Sathkara",
+  description: "ඔබගේ සත්කාර සදා මතකයේ තබාගන්න",
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="si">
+      <body className={`${poppins.variable} ${notoSinhala.variable} font-sans bg-background text-charcoal`}>
+        <LanguageProvider>{children}</LanguageProvider>
+      </body>
+    </html>
+  );
+}

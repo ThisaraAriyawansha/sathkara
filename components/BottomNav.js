@@ -1,0 +1,69 @@
+"use client";
+
+import { useLanguage } from "@/context/LanguageContext";
+
+const HomeIcon = ({ active }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#556B2F" : "#6B7280"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+    <polyline points="9 22 9 12 15 12 15 22" />
+  </svg>
+);
+
+const AddIcon = () => (
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FAF8F5" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="12" y1="5" x2="12" y2="19" />
+    <line x1="5" y1="12" x2="19" y2="12" />
+  </svg>
+);
+
+const ProfileIcon = ({ active }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? "#556B2F" : "#6B7280"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+);
+
+export default function BottomNav({ activePath = "/" }) {
+  const { t } = useLanguage();
+
+  const isActive = (path) => activePath === path;
+
+  return (
+    <nav
+      className="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-border z-40"
+      style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+    >
+      <div className="flex items-center justify-around px-2 py-2 relative">
+        <a
+          href="/"
+          className="flex flex-col items-center justify-center min-w-[64px] min-h-[52px] gap-1"
+        >
+          <HomeIcon active={isActive("/")} />
+          <span className={`text-xs ${isActive("/") ? "text-primary font-medium" : "text-slate"}`}>
+            {t("nav.home")}
+          </span>
+        </a>
+
+        {/* Center raised Add button — primary action, largest tap target */}
+        <a
+          href="/add"
+          className="flex flex-col items-center justify-center -mt-6"
+        >
+          <span className="w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-lg">
+            <AddIcon />
+          </span>
+        </a>
+
+        <a
+          href="/profile"
+          className="flex flex-col items-center justify-center min-w-[64px] min-h-[52px] gap-1"
+        >
+          <ProfileIcon active={isActive("/profile")} />
+          <span className={`text-xs ${isActive("/profile") ? "text-primary font-medium" : "text-slate"}`}>
+            {t("nav.profile")}
+          </span>
+        </a>
+      </div>
+    </nav>
+  );
+}

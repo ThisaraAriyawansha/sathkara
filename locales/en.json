@@ -1,0 +1,32 @@
+{
+  "nav": {
+    "home": "Home",
+    "addDonation": "Add Donation",
+    "profile": "Profile",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "home": {
+    "tagline": "Keep your good deeds in memory forever",
+    "subtitle": "Record and share your acts of merit"
+  },
+  "donation": {
+    "title": "Title",
+    "date": "Date",
+    "location": "Location",
+    "description": "Description",
+    "category": "Category",
+    "image": "Image",
+    "public": "Visible to everyone",
+    "private": "Private",
+    "wellWish": "Sadhu! Sadhu!! Sadhu!!!"
+  },
+  "categories": {
+    "dana": "Dana (Alms giving)",
+    "pirith": "Pirith Ceremony",
+    "robe": "Robe Offering",
+    "temple": "Temple Donation",
+    "alms": "Religious Merit Act",
+    "other": "Other"
+  }
+}
