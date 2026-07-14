@@ -39,15 +39,13 @@ export default function Navbar({ transparent = false }) {
         {/* Desktop-only text nav, centered — mobile users get the bottom tab bar instead */}
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-charcoal absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <a href="/" className="hover:text-primary transition">{t("nav.home")}</a>
+          <a href={user ? "/add" : "/login"} className="hover:text-primary transition">{t("nav.addDonation")}</a>
+          <a href={user ? "/profile" : "/login"} className="hover:text-primary transition">{t("nav.profile")}</a>
+          {user && profile?.role === "admin" && (
+            <a href="/admin" className="hover:text-primary transition">{t("nav.admin")}</a>
+          )}
           {user && (
-            <>
-              <a href="/add" className="hover:text-primary transition">{t("nav.addDonation")}</a>
-              <a href="/profile" className="hover:text-primary transition">{t("nav.profile")}</a>
-              {profile?.role === "admin" && (
-                <a href="/admin" className="hover:text-primary transition">{t("nav.admin")}</a>
-              )}
-              <button onClick={logout} className="hover:text-primary transition">{t("nav.logout")}</button>
-            </>
+            <button onClick={logout} className="hover:text-primary transition">{t("nav.logout")}</button>
           )}
         </div>
 

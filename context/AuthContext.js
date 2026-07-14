@@ -22,21 +22,28 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        const profileData = await fetchProfile(firebaseUser.uid);
-        if (profileData?.disabled) {
-          await signOut(auth);
+      try {
+        if (firebaseUser) {
+          const profileData = await fetchProfile(firebaseUser.uid);
+          if (profileData?.disabled) {
+            await signOut(auth);
+            setUser(null);
+            setProfile(null);
+          } else {
+            setUser(firebaseUser);
+            setProfile(profileData);
+          }
+        } else {
           setUser(null);
           setProfile(null);
-        } else {
-          setUser(firebaseUser);
-          setProfile(profileData);
         }
-      } else {
-        setUser(null);
+      } catch (err) {
+        console.error("Failed to load user profile:", err);
+        setUser(firebaseUser);
         setProfile(null);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return () => unsub();
