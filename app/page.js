@@ -89,7 +89,7 @@ export default function Home() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[center_88%] sm:object-[center_70%]"
+          className="object-cover scale-150 object-[center_82%] sm:scale-100 sm:object-[center_70%]"
         />
         <div className="absolute inset-x-0 top-0 h-24 sm:h-32 md:h-40 bg-gradient-to-b from-background/70 to-transparent" />
 
