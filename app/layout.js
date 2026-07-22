@@ -18,6 +18,11 @@ const notoSinhala = Noto_Sans_Sinhala({
 export const metadata = {
   title: "සත්කාර | Sathkara",
   description: "ඔබගේ සත්කාර සදා මතකයේ තබාගන්න",
+  icons: {
+    icon: "/img/logo-icon.png",
+    shortcut: "/img/logo-icon.png",
+    apple: "/img/logo-icon.png",
+  },
 };
 
 export default function RootLayout({ children }) {
