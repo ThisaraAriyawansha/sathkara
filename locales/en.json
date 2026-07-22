@@ -65,8 +65,12 @@
     "other": "Other"
   },
   "auth": {
-    "loginTitle": "Login",
-    "signupTitle": "Create Account",
+    "tagline": "Share what you can, help someone in need — donate your surplus food and goods with Sathkara.",
+    "backHome": "Back to Home",
+    "loginTitle": "Welcome back",
+    "loginSubtitle": "Login to continue to Sathkara",
+    "signupTitle": "Create your account",
+    "signupSubtitle": "Join Sathkara and start sharing",
     "name": "Name",
     "email": "Email",
     "password": "Password",
