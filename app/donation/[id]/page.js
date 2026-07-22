@@ -101,7 +101,7 @@ function ImageLightbox({ images, index, onClose, onIndexChange }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-charcoal/95 backdrop-blur-sm flex flex-col animate-[fadeIn_0.15s_ease-out]">
+    <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex flex-col animate-[fadeIn_0.15s_ease-out]">
       <div className="flex items-center justify-between px-4 sm:px-6 py-4 text-background shrink-0">
         <span className="text-sm font-medium tabular-nums opacity-80">
           {images.length > 1 ? `${index + 1} / ${images.length}` : ""}
@@ -311,16 +311,14 @@ export default function DonationDetailPage() {
 
   const images = [donation.imageUrl, ...(donation.galleryUrls || [])].filter(Boolean);
 
+  const cardClass = "bg-surface rounded-2xl shadow-[0_1px_2px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.08)] border border-border/60";
+
   return (
-    <main className="pb-24 md:pb-0 min-h-screen">
+    <main className="pb-24 md:pb-0 min-h-screen bg-[#F6F7F5]">
       <Navbar />
 
-      <div className="max-w-2xl mx-auto px-5 sm:px-6 pt-5 sm:pt-8">
-        <div className="h-1.5 w-full max-w-[120px] mx-auto sm:mx-0 rounded-full bg-gradient-to-r from-accent via-primary/70 to-accent mb-4" />
-      </div>
-
       {/* Full-bleed on mobile (90% of traffic) — contained and rounded from sm up */}
-      <div className="relative w-full h-80 sm:h-[26rem] md:h-[30rem] lg:h-[34rem] sm:max-w-2xl sm:mx-auto overflow-hidden bg-gradient-to-br from-primary/10 via-[#FAF8F5] to-accent/15 sm:rounded-3xl shadow-sm mb-3 group">
+      <div className="relative w-full h-72 sm:h-96 md:h-[28rem] sm:max-w-3xl sm:mx-auto sm:mt-6 overflow-hidden bg-gradient-to-br from-primary/10 via-[#FAF8F5] to-accent/15 sm:rounded-2xl shadow-sm group">
         {donation.imageUrl ? (
           <button
             type="button"
@@ -331,7 +329,7 @@ export default function DonationDetailPage() {
             <img
               src={donation.imageUrl}
               alt={donation.title}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
             />
           </button>
         ) : (
@@ -342,123 +340,119 @@ export default function DonationDetailPage() {
             </div>
           </div>
         )}
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-charcoal/55 to-transparent pointer-events-none" />
-        <span className="absolute bottom-4 left-4 sm:left-4 flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full bg-primary text-background font-semibold shadow-sm">
-          <CategoryIcon category={donation.category} />
-          {t(`categories.${donation.category}`)}
-        </span>
         {donation.imageUrl && (
-          <span className="absolute bottom-4 right-4 flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-charcoal/50 text-background font-medium backdrop-blur-sm pointer-events-none">
-            <ZoomInIcon width={14} height={14} />
-            {t("donation.tapToZoom")}
+          <span className="absolute bottom-3 right-3 w-9 h-9 flex items-center justify-center rounded-full bg-charcoal/45 text-background backdrop-blur-sm pointer-events-none opacity-0 sm:group-hover:opacity-100 transition">
+            <ZoomInIcon width={16} height={16} />
           </span>
         )}
       </div>
 
-      <div className="max-w-2xl mx-auto px-5 sm:px-6 pb-6 sm:pb-8">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-4 sm:pt-6 pb-6 sm:pb-10 flex flex-col gap-4 sm:gap-5">
         {donation.galleryUrls?.length > 0 && (
-          <div className="flex gap-3 overflow-x-auto pb-1 mb-6">
+          <div className="flex gap-2.5 overflow-x-auto -mx-1 px-1">
             {donation.galleryUrls.map((url, i) => (
               <button
                 type="button"
                 key={i}
                 onClick={() => setLightboxIndex(i + 1)}
-                className="w-28 h-28 sm:w-32 sm:h-32 shrink-0 rounded-2xl overflow-hidden border border-border/70 shadow-sm cursor-zoom-in transition hover:border-primary/40 hover:shadow-md"
+                className="w-20 h-20 sm:w-24 sm:h-24 shrink-0 rounded-xl overflow-hidden shadow-sm cursor-zoom-in transition hover:opacity-90"
               >
-                <img
-                  src={url}
-                  alt=""
-                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                />
+                <img src={url} alt="" className="w-full h-full object-cover" />
               </button>
             ))}
           </div>
         )}
 
-        <h1 className="text-2xl sm:text-3xl font-semibold text-charcoal leading-snug mt-1">{donation.title}</h1>
-        <p className="flex flex-wrap items-center gap-1.5 text-[15px] sm:text-base text-slate mt-2.5">
-          <CalendarIcon width={18} height={18} />
-          {donation.date}
-          {donation.location && (
-            <>
-              <span className="text-border">·</span>
-              <MapPinIcon width={18} height={18} />
-              {donation.location}
-            </>
-          )}
-        </p>
-
-        {donation.description && (
-          <div className="mt-5 p-5 rounded-2xl border border-border/70 bg-surface">
-            <p className="text-charcoal text-base sm:text-lg leading-relaxed whitespace-pre-wrap">{donation.description}</p>
+        <div className={`${cardClass} p-5 sm:p-6`}>
+          <div className="flex items-center gap-1.5 text-sm font-medium text-primary mb-2">
+            <CategoryIcon category={donation.category} width={16} height={16} />
+            {t(`categories.${donation.category}`)}
           </div>
-        )}
+          <h1 className="text-2xl sm:text-3xl font-medium text-charcoal leading-snug">{donation.title}</h1>
+          <p className="flex flex-wrap items-center gap-1.5 text-sm sm:text-[15px] text-slate mt-2">
+            <CalendarIcon width={16} height={16} />
+            {donation.date}
+            {donation.location && (
+              <>
+                <span className="text-border">·</span>
+                <MapPinIcon width={16} height={16} />
+                {donation.location}
+              </>
+            )}
+          </p>
+
+          {donation.description && (
+            <p className="text-charcoal/90 text-[15px] sm:text-base leading-relaxed whitespace-pre-wrap mt-4 pt-4 border-t border-border/60">
+              {donation.description}
+            </p>
+          )}
+        </div>
 
         <a
           href={`/user/${donation.authorId}`}
-          className="flex items-center gap-3.5 mt-5 p-4 rounded-2xl border border-border/70 bg-surface hover:border-primary/30 transition"
+          className={`${cardClass} flex items-center gap-3.5 p-4 sm:p-5 hover:shadow-[0_2px_6px_rgba(0,0,0,0.1)] transition`}
         >
-          <img src={authorAvatar} alt={donation.authorName} className="w-14 h-14 rounded-full object-cover ring-2 ring-primary/15" />
-          <div>
+          <img src={authorAvatar} alt={donation.authorName} className="w-12 h-12 rounded-full object-cover" />
+          <div className="min-w-0">
             <p className="text-xs text-slate">{t("donation.sharedBy")}</p>
-            <p className="text-base font-medium text-charcoal">{donation.authorName}</p>
+            <p className="text-base font-medium text-charcoal truncate">{donation.authorName}</p>
             {author?.bio && <p className="text-sm text-slate line-clamp-1 mt-0.5">{author.bio}</p>}
           </div>
         </a>
 
-        <div className="mt-10 sm:mt-12">
-          <h2 className="flex items-center gap-2 text-xl font-semibold text-primary mb-5">
-            <WellWishIcon width={22} height={22} />
+        <div className={`${cardClass} p-5 sm:p-6`}>
+          <h2 className="flex items-center gap-2 text-lg font-medium text-charcoal mb-4">
+            <WellWishIcon width={20} height={20} className="text-primary" />
             {t("donation.wellWishesTitle")} ({wishes.length})
           </h2>
 
           {user ? (
-            <form onSubmit={handlePostWish} className="flex flex-col gap-3 mb-8">
+            <form onSubmit={handlePostWish} className="flex flex-col gap-3 mb-5 pb-5 border-b border-border/60">
               <textarea
                 rows={2}
                 maxLength={200}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder={t("donation.wellWishPlaceholder")}
-                className="w-full px-4 py-3.5 rounded-2xl border border-border bg-surface focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary text-base transition resize-none"
+                className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary text-[15px] transition resize-none"
               />
               <div className="flex flex-wrap items-center gap-3">
                 <button
                   type="button"
                   onClick={handleQuickFill}
-                  className="min-h-[44px] px-4 rounded-full border border-accent/50 bg-accent/10 text-primary font-semibold text-sm hover:bg-accent/20 transition"
+                  className="min-h-[40px] px-4 rounded-full border border-border text-slate font-medium text-sm hover:border-primary/40 hover:text-primary transition"
                 >
                   {t("donation.wellWish")}
                 </button>
                 <button
                   type="submit"
                   disabled={posting || !message.trim()}
-                  className="ml-auto min-h-[48px] px-6 rounded-2xl bg-primary text-background font-medium text-base hover:bg-primary/90 active:scale-[0.99] disabled:opacity-60 transition"
+                  className="ml-auto min-h-[40px] px-5 rounded-full bg-primary text-background font-medium text-sm hover:bg-primary/90 active:scale-[0.99] disabled:opacity-60 transition"
                 >
                   {posting ? t("addDonation.saving") : t("donation.postWellWish")}
                 </button>
               </div>
             </form>
           ) : (
-            <p className="text-base text-slate mb-8">
+            <p className="text-[15px] text-slate mb-5 pb-5 border-b border-border/60">
               <a href="/login" className="text-primary font-medium">{t("nav.login")}</a> {t("donation.toWellWish")}
             </p>
           )}
 
           {wishes.length === 0 ? (
-            <p className="text-slate text-base">{t("donation.noWellWishes")}</p>
+            <p className="text-slate text-[15px]">{t("donation.noWellWishes")}</p>
           ) : (
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col divide-y divide-border/60">
               {wishes.map((wish) => {
                 const avatar =
                   wish.authorPicUrl ||
                   "https://api.dicebear.com/7.x/initials/svg?seed=" + encodeURIComponent(wish.authorName || "?");
                 return (
-                  <li key={wish.id} className="flex gap-3.5 p-4 rounded-2xl border border-border/60 bg-primary/[0.03]">
-                    <img src={avatar} alt={wish.authorName} className="w-10 h-10 rounded-full object-cover flex-shrink-0 ring-2 ring-background" />
-                    <div>
+                  <li key={wish.id} className="flex gap-3 py-3.5 first:pt-0 last:pb-0">
+                    <img src={avatar} alt={wish.authorName} className="w-9 h-9 rounded-full object-cover flex-shrink-0" />
+                    <div className="min-w-0">
                       <p className="text-sm font-medium text-charcoal">{wish.authorName}</p>
-                      <p className="text-base text-charcoal/90 mt-0.5">{wish.message}</p>
+                      <p className="text-[15px] text-charcoal/90 mt-0.5">{wish.message}</p>
                     </div>
                   </li>
                 );
