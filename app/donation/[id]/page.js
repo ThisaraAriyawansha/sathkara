@@ -52,10 +52,20 @@ export default function DonationDetailPage() {
         const data = { id: snap.id, ...snap.data() };
         setDonation(data);
 
-        const authorSnap = await getDoc(doc(db, "users", data.authorId));
-        if (authorSnap.exists()) setAuthor(authorSnap.data());
+        if (user) {
+          try {
+            const authorSnap = await getDoc(doc(db, "users", data.authorId));
+            if (authorSnap.exists()) setAuthor(authorSnap.data());
+          } catch (authorErr) {
+            console.error(authorErr);
+          }
+        }
 
-        await loadWishes(data.id);
+        try {
+          await loadWishes(data.id);
+        } catch (wishesErr) {
+          console.error(wishesErr);
+        }
       } catch (err) {
         console.error(err);
         setNotFound(true);
@@ -64,7 +74,7 @@ export default function DonationDetailPage() {
       }
     };
     load();
-  }, [id]);
+  }, [id, user?.uid]);
 
   const handleQuickFill = () => setMessage(t("donation.wellWish"));
 
