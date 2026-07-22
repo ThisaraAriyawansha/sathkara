@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
   doc,
@@ -20,7 +20,190 @@ import { useLanguage } from "@/context/LanguageContext";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import CategoryIcon, { WellWishIcon, CalendarIcon } from "@/components/CategoryIcons";
-import { MapPinIcon } from "@/components/FormIcons";
+import {
+  MapPinIcon,
+  XIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ZoomInIcon,
+  ZoomOutIcon,
+} from "@/components/FormIcons";
+
+const ZOOM_SCALE = 2.5;
+
+function ImageLightbox({ images, index, onClose, onIndexChange }) {
+  const { t } = useLanguage();
+  const [zoomed, setZoomed] = useState(false);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const dragRef = useRef({ dragging: false, moved: false, startX: 0, startY: 0, baseX: 0, baseY: 0 });
+
+  useEffect(() => {
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, []);
+
+  const goTo = useCallback(
+    (next) => {
+      setZoomed(false);
+      setPos({ x: 0, y: 0 });
+      onIndexChange(((next % images.length) + images.length) % images.length);
+    },
+    [images.length, onIndexChange]
+  );
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "Escape") onClose();
+      else if (e.key === "ArrowRight" && images.length > 1) goTo(index + 1);
+      else if (e.key === "ArrowLeft" && images.length > 1) goTo(index - 1);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose, goTo, index, images.length]);
+
+  const toggleZoom = () => {
+    if (dragRef.current.moved) {
+      dragRef.current.moved = false;
+      return;
+    }
+    if (zoomed) {
+      setZoomed(false);
+      setPos({ x: 0, y: 0 });
+    } else {
+      setZoomed(true);
+    }
+  };
+
+  const handlePointerDown = (e) => {
+    if (!zoomed) return;
+    dragRef.current.dragging = true;
+    dragRef.current.moved = false;
+    dragRef.current.startX = e.clientX;
+    dragRef.current.startY = e.clientY;
+    dragRef.current.baseX = pos.x;
+    dragRef.current.baseY = pos.y;
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+
+  const handlePointerMove = (e) => {
+    if (!dragRef.current.dragging) return;
+    const dx = e.clientX - dragRef.current.startX;
+    const dy = e.clientY - dragRef.current.startY;
+    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) dragRef.current.moved = true;
+    setPos({ x: dragRef.current.baseX + dx, y: dragRef.current.baseY + dy });
+  };
+
+  const handlePointerUp = () => {
+    dragRef.current.dragging = false;
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-charcoal/95 backdrop-blur-sm flex flex-col animate-[fadeIn_0.15s_ease-out]">
+      <div className="flex items-center justify-between px-4 sm:px-6 py-4 text-background shrink-0">
+        <span className="text-sm font-medium tabular-nums opacity-80">
+          {images.length > 1 ? `${index + 1} / ${images.length}` : ""}
+        </span>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              if (zoomed) {
+                setZoomed(false);
+                setPos({ x: 0, y: 0 });
+              } else {
+                setZoomed(true);
+              }
+            }}
+            className="w-10 h-10 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition"
+            aria-label={t("donation.tapToZoom")}
+          >
+            {zoomed ? <ZoomOutIcon /> : <ZoomInIcon />}
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-10 h-10 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition"
+            aria-label="Close"
+          >
+            <XIcon width={18} height={18} className="text-background" />
+          </button>
+        </div>
+      </div>
+
+      <div
+        className="relative flex-1 overflow-hidden touch-none select-none"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) onClose();
+        }}
+      >
+        {images.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                goTo(index - 1);
+              }}
+              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition text-background"
+              aria-label="Previous"
+            >
+              <ChevronLeftIcon />
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                goTo(index + 1);
+              }}
+              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition text-background"
+              aria-label="Next"
+            >
+              <ChevronRightIcon />
+            </button>
+          </>
+        )}
+
+        <div className="w-full h-full flex items-center justify-center">
+          <img
+            src={images[index]}
+            alt=""
+            draggable={false}
+            onClick={toggleZoom}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerLeave={handlePointerUp}
+            className="max-w-full max-h-full object-contain transition-transform duration-150 ease-out"
+            style={{
+              transform: `scale(${zoomed ? ZOOM_SCALE : 1}) translate(${pos.x / (zoomed ? ZOOM_SCALE : 1)}px, ${pos.y / (zoomed ? ZOOM_SCALE : 1)}px)`,
+              cursor: zoomed ? (dragRef.current.dragging ? "grabbing" : "grab") : "zoom-in",
+            }}
+          />
+        </div>
+      </div>
+
+      {images.length > 1 && (
+        <div className="flex gap-2 overflow-x-auto px-4 sm:px-6 py-3 shrink-0">
+          {images.map((url, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => goTo(i)}
+              className={`w-14 h-14 shrink-0 rounded-xl overflow-hidden border-2 transition ${
+                i === index ? "border-background" : "border-transparent opacity-60 hover:opacity-90"
+              }`}
+            >
+              <img src={url} alt="" className="w-full h-full object-cover" />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function DonationDetailPage() {
   const { id } = useParams();
@@ -35,6 +218,7 @@ export default function DonationDetailPage() {
   const [pageLoading, setPageLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [posting, setPosting] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(null);
 
   const loadWishes = async (donationId) => {
     const q = query(collection(db, "donations", donationId, "wellWishes"), orderBy("createdAt", "desc"));
@@ -125,6 +309,8 @@ export default function DonationDetailPage() {
     donation.authorPicUrl ||
     "https://api.dicebear.com/7.x/initials/svg?seed=" + encodeURIComponent(donation.authorName || "?");
 
+  const images = [donation.imageUrl, ...(donation.galleryUrls || [])].filter(Boolean);
+
   return (
     <main className="pb-24 md:pb-0 min-h-screen">
       <Navbar />
@@ -134,9 +320,20 @@ export default function DonationDetailPage() {
       </div>
 
       {/* Full-bleed on mobile (90% of traffic) — contained and rounded from sm up */}
-      <div className="relative w-full h-72 sm:h-80 md:h-96 sm:max-w-2xl sm:mx-auto overflow-hidden bg-gradient-to-br from-primary/10 via-[#FAF8F5] to-accent/15 sm:rounded-3xl shadow-sm mb-3">
+      <div className="relative w-full h-80 sm:h-[26rem] md:h-[30rem] lg:h-[34rem] sm:max-w-2xl sm:mx-auto overflow-hidden bg-gradient-to-br from-primary/10 via-[#FAF8F5] to-accent/15 sm:rounded-3xl shadow-sm mb-3 group">
         {donation.imageUrl ? (
-          <img src={donation.imageUrl} alt={donation.title} className="w-full h-full object-cover" />
+          <button
+            type="button"
+            onClick={() => setLightboxIndex(0)}
+            className="w-full h-full block cursor-zoom-in"
+            aria-label={t("donation.tapToZoom")}
+          >
+            <img
+              src={donation.imageUrl}
+              alt={donation.title}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+            />
+          </button>
         ) : (
           <div className="w-full h-full flex items-center justify-center relative overflow-hidden">
             <div className="absolute w-56 h-56 rounded-full bg-accent/15 blur-3xl" />
@@ -145,23 +342,35 @@ export default function DonationDetailPage() {
             </div>
           </div>
         )}
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-charcoal/55 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-charcoal/55 to-transparent pointer-events-none" />
         <span className="absolute bottom-4 left-4 sm:left-4 flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full bg-primary text-background font-semibold shadow-sm">
           <CategoryIcon category={donation.category} />
           {t(`categories.${donation.category}`)}
         </span>
+        {donation.imageUrl && (
+          <span className="absolute bottom-4 right-4 flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full bg-charcoal/50 text-background font-medium backdrop-blur-sm pointer-events-none">
+            <ZoomInIcon width={14} height={14} />
+            {t("donation.tapToZoom")}
+          </span>
+        )}
       </div>
 
       <div className="max-w-2xl mx-auto px-5 sm:px-6 pb-6 sm:pb-8">
         {donation.galleryUrls?.length > 0 && (
-          <div className="flex gap-2.5 overflow-x-auto pb-1 mb-6">
+          <div className="flex gap-3 overflow-x-auto pb-1 mb-6">
             {donation.galleryUrls.map((url, i) => (
-              <img
+              <button
+                type="button"
                 key={i}
-                src={url}
-                alt=""
-                className="w-24 h-24 shrink-0 object-cover rounded-2xl border border-border"
-              />
+                onClick={() => setLightboxIndex(i + 1)}
+                className="w-28 h-28 sm:w-32 sm:h-32 shrink-0 rounded-2xl overflow-hidden border border-border/70 shadow-sm cursor-zoom-in transition hover:border-primary/40 hover:shadow-md"
+              >
+                <img
+                  src={url}
+                  alt=""
+                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                />
+              </button>
             ))}
           </div>
         )}
@@ -260,6 +469,15 @@ export default function DonationDetailPage() {
       </div>
 
       <BottomNav activePath="/" />
+
+      {lightboxIndex !== null && (
+        <ImageLightbox
+          images={images}
+          index={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onIndexChange={setLightboxIndex}
+        />
+      )}
     </main>
   );
 }

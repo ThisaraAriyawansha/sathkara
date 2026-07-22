@@ -51,7 +51,8 @@
     "wellWishPlaceholder": "Write a short well-wish...",
     "postWellWish": "Post",
     "toWellWish": "to send a well-wish.",
-    "noWellWishes": "No well-wishes yet. Be the first."
+    "noWellWishes": "No well-wishes yet. Be the first.",
+    "tapToZoom": "Tap to zoom"
   },
   "addDonation": {
     "title": "Add a Donation",
